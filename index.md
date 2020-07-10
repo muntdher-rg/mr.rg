@@ -1,500 +1,848 @@
-
+<!DOCTYPE html>
 <html>
-    <title>muntadher</title>
     <head>
-<style>
+        <title>muntadher</title>
+        <meta charset="utf-8">
+        <style>
+           
+@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
+
 * {
-  margin: 0;
-  padding: 0;
-  color: #FFF;
-  text-decoration: none;
+	box-sizing: border-box;
 }
 
 body {
+	background-color:black
+	color: black
+	font-family: 'Poppins', sans-serif;
+	margin: 0;
+}
+
+header {
+	background-image: url('https://www.google.com/imgres?imgurl=https%3A%2F%2Fe-cdns-images.dzcdn.net%2Fimages%2Fartist%2F0df7c9931cdb8de51bb5de1db35116b8%2F500x500.jpg&imgrefurl=http%3A%2F%2Fwww.deezer.com%2Fnl%2Fartist%2F167095%3Fapp_id%3D100023&tbnid=VUgd8dmaLyS_BM&vet=12ahUKEwib36vEzKDpAhUat6QKHasTDyMQMygKegUIARCHAg..i&docid=2LVXJrhVbvBYNM&w=500&h=500&q=2pac&ved=2ahUKEwib36vEzKDpAhUat6QKHasTDyMQMygKegUIARCHAg');
+	background-size: cover;
+	background-position: center center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: calc(100vh - 64px);	
+	position: relative;
+}
+
+header * {
+	z-index: 1;
+}
+
+header::after {
+	content: '';
+	background-color: #000;
+	opacity: 0.4;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+}
+
+header h1 {
+	color: rgb(14, 12, 12);
+	font-size: 4em;
+	text-align: center;
+	width: 60%;
+}
+
+nav {
+	background-color: #fff;
+	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	padding: 15px;
+}
+
+nav p {
+	color: rgb(19, 20, 20);
+	font-weight: bold;
+	margin: 5px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+
+.burger {
+	border: 0;
+	cursor: pointer;
+	display: none;
+	font-size: 22px;
+	position: relative;
+	padding: 0;
+	outline: none;
+	height: 30px;
+	width: 30px;
+}
+
+.burger:active {
+	color: #0594EC;
+	outline: none;
+}
+
+.burger .bar {
+	background-color: #0594EC;
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%, -50%) rotate(0deg);
+	height: 3px;
+	width: 20px;
+	transition: transform 0.2s ease;
+}
+
+.burger .bar:first-of-type {
+	top: 40%;
+}
+
+.burger .bar:last-of-type {
+	top: 60%;
+}
+
+ul {
+	display: flex;
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+ul li {
+	margin: 0 10px;
+}
+
+ul li a {
+	color: #2C405E;
+	position: relative;
+	text-decoration: none;
+}
+
+ul li a::after {
+	content: '';
+	background-color: #2C405E;
+	position: absolute;
+	bottom: -18px;
+	left: 0;
+	opacity: 0;
+	height: 2px;
+	width: 100%;
+	transition: transform 0.2s ease;
+}
+
+ul li a:hover::after {
+	opacity: 1;
+	transform: translateY(-15px);
+}
+
+@media screen and (max-width: 480px) {
+	header h1 {
+		font-size: 2em;
+	}
+	
+	.burger {
+		display: block;
+	}
+	
+	.burger.show-x .bar:first-of-type {
+		transform: translate(-50%, 50%) rotate(225deg);
+	}
+	
+	.burger.show-x .bar:last-of-type {
+		transform: translate(-50%, -150%) rotate(-225deg);
+	}
+	
+	ul {
+		background-color: #fff;
+		box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+		flex-direction: column;
+		text-align: center;
+		position: fixed;
+		top: 80px;
+		left: 10%;
+		transform: translateX(120%);
+		width: 80%;
+		transition: transform 0.3s ease-in;
+		z-index: 100;
+	}
+	
+	ul.show {
+		transform: translateX(0);
+	}
+	
+	ul li {
+		margin: 15px;
+	}
+}
+
+.a {
+  background-image: url(2pac.jpg);
+}
+
+.b {
+  background-image: url();
+}
+    
+
+/*
+* The function calc is working wrong in case calculations in the Firefox
+*/
+
+.photobox{
+  display: inline-block;
+}
+
+.photobox__previewbox{
   position: relative;
-  background: #000;
+  overflow: hidden;
 }
 
-canvas#canvas {
+.photobox__preview{
   display: block;
+  max-width: 100%;
 }
 
-div#controller {
-  font-size: 16px;
-  display: none;
-  height: 100%;
+.photobox__previewbox:before{
+  content: "";
+}
+
+/* type 1 */
+
+.photobox_type1 .photobox__previewbox:before{
+  width: 0;
+  height: 0;
+  padding: 25%;
+  border-radius: 50%;
+  
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  background-color: var(--photoboxOverlay, rgba(0, 0, 0, .8));
+  transition: transform calc(var(--photoboxAnimationDuration, .4s) / 2) ease calc(var(--photoboxAnimationDuration, .2s) / 2);
+  will-change: transform;
+  transform: scale(0);
+}
+
+.photobox_type1:hover .photobox__previewbox:before{
+  transform: scale(2);
+  transition-duration: var(--photoboxAnimationDuration, .4s);
+  transition-delay: 0s;
+}
+
+.photobox_type1 .photobox__label{
+  width: 50%;
+  transform: translate(-200%, -50%);
+  transition: transform var(--photoboxAnimationDuration, .4s) ease-out;
+  will-change: transform;
+  
+  position: absolute;
+  top: 50%;
+  left: 15%;
+}
+
+.photobox_type1:hover .photobox__label{
+  transition-duration: var(--photoboxAnimationDuration, .4s);
+  transform: translate(0, -50%);
+}
+
+/* type 2*/
+
+.photobox_type2 .photobox__previewbox:before{
+  width: 0;
+  height: 0;
+  padding: 25%;
+  
+  border-radius: 50%;
+  background-color: var(--photoboxOverlay, rgba(0, 0, 0, .8));
+  
   position: absolute;
   top: 0;
   right: 0;
-  background: #F00583;
-  opacity: 0.9;
-  overflow-y: scroll;
+
+  transition: transform var(--photoboxAnimationDuration, .2s) ease calc(var(--photoboxAnimationDuration, .2s) / 2);
+  will-change: transform;
+  transform: scale(0);
+}
+
+.photobox_type2:hover .photobox__previewbox:before{
+  transform: scale(2);
+  transition-duration: var(--photoboxAnimationDuration, .4s);
+  transition-delay: 0s;
+}
+
+.photobox_type2 .photobox__label{
+  width: 50%;
+  text-align: right;
+  
+  transform: translate(200%, -50%);
+  transition: transform var(--photoboxAnimationDuration, .4s) ease-out;
+  will-change: transform;
+  
+  position: absolute;
+  top: 50%;
+  right: 15%;
+}
+
+.photobox_type2:hover .photobox__label{
+  transition-duration: var(--photoboxAnimationDuration, .4s);
+  transform: translate(0, -50%);
+}
+
+/* type 3 */
+
+.photobox_type3 .photobox__previewbox:before{
+  width: 0;
+  height: 0;
+  padding: 25%;
+  
+  background-color: var(--photoboxOverlay, rgba(0, 0, 0, .8));
+  border-radius: 50%;
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+
+  transition: transform var(--photoboxAnimationDuration, .4s) ease;
+  will-change: transform;
+  transform: translate(-50%, -50%) scale(0);
+}
+
+.photobox_type3:hover .photobox__previewbox:before{
+  transform: translate(-50%, -50%) scale(4);
+  transition-duration: calc(var(--photoboxAnimationDuration, .4s) * 2);
+}
+
+.photobox_type3 .photobox__label{
+  width: 95%;
+  text-align: center;
+  
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity var(--photoboxAnimationDuration, .4s) ease-out;
+  will-change: opacity;
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
   z-index: 3;
 }
 
-div#controller > dl {
-  padding: 0 1.6rem 1.6rem;
+.photobox_type3:hover .photobox__label{
+  transition-duration: calc(var(--photoboxAnimationDuration, .4s) / 2);
+  transition-delay: calc(var(--photoboxAnimationDuration, .4s) / 2);
+  opacity: 1;
 }
 
-input {
-  color: #000;
+.photobox_type3 .photobox__preview{
+    transition: transform var(--photoboxAnimationDuration, .4s) cubic-bezier(0.71, 0.05, 0.29, 0.9);
+  will-change: transform;
+    transform: scale(1);
 }
 
-select {
-  color: #000;
-  font-size: 16px;
+.photobox_type3:hover .photobox__preview{
+  transform: scale(1.2);
 }
 
-input#text {
-  width: 100%;
-  height: 30px;
-  font-size: 16px;
-}
+/* type 4 */
 
-input#fontColor {
-  width: 100%;
-  height: 30px;
-}
-
-input#backgroundColor {
-  width: 100%;
-  height: 30px;
-}
-
-input#inputFlexibility {
-  width: 100%;
-  height: 30px;
-}
-
-input[type='range'] {
-  width: 100%;
-}
-
-select#composition {
-  width: 100%;
-  height: 30px;
-}
-
-p {
-  padding: 1.6rem 0;
-}
-
-p#closeController {
-  padding: 1.6rem;
-}
-
-p#openController {
-  background: #F00583;
-  position: fixed;
-  padding: 0.8rem;
-  right: 0;
-  left: 0;
-  bottom: 1.6rem;
-  margin: auto;
-  width: 200px;
-  text-align: center;
+.photobox_type4 .photobox__previewbox:before{
+  width: 0;
+  height: 0;
+  padding: 25%;
+  
+  background-color: var(--photoboxOverlay, rgba(0, 0, 0, .8));
+  border-radius: 50%;
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
   z-index: 2;
+
+  transition: transform var(--photoboxAnimationDuration, .4s) ease;
+  will-change: transform;
+  transform: translate(-50%, -50%) scale(0);
 }
-</style>
 
-<script>
-(function () {
-  'use strict';
-  window.addEventListener('load', function () {
-    var canvas = document.getElementById('canvas');
+.photobox_type4:hover .photobox__previewbox:before{
+  transform: translate(-50%, -50%) scale(4);
+  transition-duration: calc(var(--photoboxAnimationDuration, .4s) * 2);
+}
 
-    if (!canvas || !canvas.getContext) {
-      return false;
-    }
+.photobox_type4 .photobox__label{
+  width: 95%;
+  text-align: center;
+  
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity var(--photoboxAnimationDuration, .4s) ease-out;
+  will-change: opacity;
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+}
 
-    /********************
-      Random Number
-    ********************/
+.photobox_type4:hover .photobox__label{
+  transition-duration: calc(var(--photoboxAnimationDuration, .4s) / 2);
+  transition-delay: calc(var(--photoboxAnimationDuration, .4s) / 2);
+  opacity: 1;
+}
 
-    function rand(min, max) {
-      return Math.floor(Math.random() * (max - min + 1) + min);
-    }
+.photobox_type4 .photobox__preview{
+    transition: transform var(--photoboxAnimationDuration, .4s) cubic-bezier(0.71, 0.05, 0.29, 0.9);
+  will-change: transform;
+    transform: scale(1) translate(0, 0);
+}
 
-    /********************
-      Var
-    ********************/
+.photobox_type4:hover .photobox__preview{
+  transform: scale(1.2) translate(4%, 4%);
+}
 
-    var ctx = canvas.getContext('2d');
-    var offscreenCanvas = document.createElement('canvas');
-    var offscreenCtx = offscreenCanvas.getContext('2d');
-    var X = canvas.width = offscreenCanvas.width = window.innerWidth;
-    var Y = canvas.height = offscreenCanvas.height = window.innerHeight;
-    var mouseX = X / 2;
-    var mouseY = Y / 2;
-    var particles = [];
-    var ease = 0.3;
-    var friction = 0.8;
-    // DOM 
-    var inputText = document.getElementById('text');
-    var inputRandomFontColor = document.getElementById('randomFontColor');
-    var inputFontColor = document.getElementById('fontColor');
-    var inputFontSize = document.getElementById('fontSize');
-    var inputParticleSize = document.getElementById('particleSize');
-    var inputStep = document.getElementById('step');
-    var inputFlexibility = document.getElementById('flexibility');
-    var inputIncreaseAngle = document.getElementById('increaseAngle');
-    var selectComposition = document.getElementById('composition');
-    // Value
-    var textValue = inputText.value;
-    var compositionValue = selectComposition.value;
-    var randomFontColorValue = inputRandomFontColor.checked;
-    var flexibilityValue = inputFlexibility.checked;
-    var fontColorValue = inputFontColor.value;
-    var stepValue = Number(inputStep.value);
-    var fontSizeValue = inputFontSize.value;
-    var particleSizeValue = inputParticleSize.value;
-    var increaseAngleValue = Number(inputIncreaseAngle.value);
-    
+/* type 5 */
 
-    /********************
-      Responsive
-    ********************/
+.photobox_type5 .photobox__previewbox:before{
+  width: 0;
+  height: 0;
+  padding: 25%;
+  
+  background-color: var(--photoboxOverlay, rgba(0, 0, 0, .8));
+  border-radius: 50%;
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
 
-    if (X < 768) {
-      textValue = 'How are you?';
-      fontSizeValue = 50;
-      stepValue = 2;
-      particleSizeValue = 4;
-    }
-     
-    /********************
-      offscreenCanvas
-    ********************/
-    
-    function drawText() {
-      offscreenCtx.save();
-      offscreenCtx.fillStyle = fontColorValue;
-      offscreenCtx.font = fontSizeValue + 'px sans-serif';
-      offscreenCtx.textAlign = 'center';
-      offscreenCtx.textBaseline = 'middle';
-      var t = offscreenCtx.measureText(textValue);
-      if (t.width > X) {
-        fontSizeValue--;
-        drawText();
-      }
-      offscreenCtx.fillText(textValue, X / 2, Y / 2);
-      offscreenCtx.restore();
-    }
+  transition: transform calc(var(--photoboxAnimationDuration, .8s) / 2) ease;
+  transform: translate(-50%, -50%) scale(0);
+  will-change: transform;
+}
 
-    /********************
-      Particle
-    ********************/
-    
-    function Particle(ctx, x, y, r, cr, cg, cb) {
-      this.ctx = ctx;
-      this.init(x, y, r, cr, cg, cb);
-    }
+.photobox_type5:hover .photobox__previewbox:before{
+  transform: translate(-50%, -50%) scale(4);
+  transition-duration: var(--photoboxAnimationDuration, .8s);
+}
 
-    Particle.prototype.init = function(x, y, r, cr, cg, cb) {
-      this.x = x;
-      this.y = y;
-      this.xi = rand(0, X);
-      this.yi = rand(0, Y);
-      this.r = r;
-      this.s = 10;
-      this.c = {
-        r: cr,
-        g: cg,
-        b: cb,
-        a: 1
-      };
-      this.v = {
-        x: rand(-5, 5) * Math.random(),
-        y: rand(-5, 5) * Math.random()
-      };
-      this.a = rand(0, 360);
-      this.rad = this.a * Math.PI / 180;
-    };
+.photobox_type5 .photobox__label{
+  width: 95%;
+  text-align: center;
+  
+  transform: translate(-200%, -50%);
+  transition: transform calc(var(--photoboxAnimationDuration, .8s) / 2) ease-out;
+  will-change: transform;
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+}
 
-    Particle.prototype.draw = function() {
-      var ctx = this.ctx;
-      ctx.save();
-      ctx.globalCompositeOperation = compositionValue;
-      ctx.fillStyle = 'rgb(' + this.c.r + ', ' + this.c.g + ', ' + this.c.b + ')';
-      ctx.beginPath();
-      ctx.arc(this.xi, this.yi, Math.sin(this.rad) < 0 ? -Math.sin(this.rad) * this.r : Math.sin(this.rad) * this.r, 0, Math.PI * 2, false);
-      ctx.fill();
-      ctx.restore();
-    };
+.photobox_type5:hover .photobox__label{
+  transition-duration: calc(var(--photoboxAnimationDuration, .8s) / 2);
+  transform: translate(-50%, -50%);
+}
 
-    Particle.prototype.updatePosition = function() {
-      this.v.x += (this.xi - this.x) * ease;
-      this.v.y += (this.yi - this.y) * ease;
-      this.v.x *= friction;
-      this.v.y *= friction;
-      this.xi -= this.v.x;
-      this.yi -= this.v.y;
-    };
+.photobox_type5 .photobox__preview{
+    transition: transform calc(var(--photoboxAnimationDuration, .8s) / 2) cubic-bezier(0.71, 0.05, 0.29, 0.9);
+  will-change: transform;
+    transform: scale(1);
+}
 
-    Particle.prototype.changeColor = function() {
-      this.c = {
-        r: rand(0, 255),
-        g: rand(0, 255),
-        b: rand(0, 255)
-      }
-    };
+.photobox_type5:hover .photobox__preview{
+  transform: scale(1.2);
+}
 
-    Particle.prototype.updateParams = function() {
-      this.a += increaseAngleValue;
-      this.rad = this.a * Math.PI / 180;
-    };
+/* type 6 */
 
-    Particle.prototype.render = function() {
-      if (flexibilityValue) this.updateParams();
-      this.updatePosition();
-      this.draw();
-    };
+.photobox_type6 .photobox__previewbox:before{
+  width: 0;
+  height: 0;
+  padding: 25%;
+  
+  background-color: var(--photoboxOverlay, rgba(0, 0, 0, .8));
+  border-radius: 50%;
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
 
-    /********************
-      Animation
-    ********************/
+  transition: transform calc(var(--photoboxAnimationDuration, .8s) / 2) ease;
+  will-change: transform;
+  transform: translate(-50%, -50%) scale(0);
+}
 
-    window.requestAnimationFrame =
-      window.requestAnimationFrame ||
-      window.mozRequestAnimationFrame ||
-      window.webkitRequestAnimationFrame ||
-      window.msRequestAnimationFrame ||
-      function(cb) {
-        setTimeout(cb, 17);
-      };
+.photobox_type6:hover .photobox__previewbox:before{
+  transform: translate(-50%, -50%) scale(4);
+  transition-duration: var(--photoboxAnimationDuration, .8s);
+}
 
-    /********************
-      Render
-    ********************/
-    
-    function initText(cb) {
-      var data = offscreenCtx.getImageData(0, 0, X, Y).data;
-      var p;
-      for (var i = 0; i < Y; i += stepValue) {
-        for (var j = 0; j < X; j += stepValue) {
-          var oI = (j + i * X) * 4 + 3; // fantastic! I can not think of it.
-          if (data[oI] > 0) {
-            if (randomFontColorValue) {
-              p = new Particle(ctx, j, i, particleSizeValue, rand(0, 255), rand(0, 255), rand(0, 255));
-            } else {
-              p = new Particle(ctx, j, i, particleSizeValue, data[oI - 3], data[oI -2], data[oI - 1]);
-            }
-            particles.push(p);
-          }
-        }
-      }
-      if (cb) {
-        cb();
-      } else {
-        return;
-      }
-    }
+.photobox_type6 .photobox__label{
+  width: 95%;
+  text-align: center;
+  
+  transform: translate(-200%, -50%);
+  transition: transform calc(var(--photoboxAnimationDuration, .8s) / 2) ease-out;
+  will-change: transform;
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
 
-    drawText();
-    initText(render);
+.photobox_type6:hover .photobox__label{
+  transition-duration: calc(var(--photoboxAnimationDuration, .8s) / 2);
+  transform: translate(-50%, -50%);
+}
 
-    /********************
-      Render
-    ********************/
-    
-    function render() {
-      ctx.clearRect(0, 0, X, Y);
-      for (var i = 0; i < particles.length; i++) {
-        particles[i].render();
-      }
-      requestAnimationFrame(render);
-    }
+/* type 7 */
 
-    /********************
-      Event
-    ********************/
-    
-    function onResize() {
-      X = canvas.width = offscreenCanvas.width = window.innerWidth;
-      Y = canvas.height = offscreenCanvas.height = window.innerHeight;
-      particles = [];
-      if (X < 768) {
-        textValue = 'How are you?';
-        fontSizeValue = 50;
-        stepValue = 2;
-        particleSizeValue = 4;
-      } else {
-        textValue = 'How are you?';
-        fontSizeValue = 200;
-        stepValue = 8;
-        particleSizeValue = 10;
-      }
-      offscreenCtx.clearRect(0, 0, X, Y);
-      drawText();
-      initText();
-    }
+.photobox_type7 .photobox__previewbox:before{
+  width: 0;
+  height: 0;
+  padding: 25%;
+  
+  background-color: var(--photoboxOverlay, rgba(0, 0, 0, .8));
+  border-radius: 50%;
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
 
-    window.addEventListener('resize', function(){
-      onResize();
-    });
+  transition: transform calc(var(--photoboxAnimationDuration, .8s) / 2) ease;
+  will-change: transform;
+  transform: translate(-50%, -50%) scale(0);
+}
 
-    /********************
-      Controller
-    ********************/
-    
-    var openController = document.getElementById('openController');
-    var closeController = document.getElementById('closeController');
-    var controller = document.getElementById('controller');
-    var backgroundColor = document.getElementById('backgroundColor');
+.photobox_type7:hover .photobox__previewbox:before{
+  transform: translate(-50%, -50%) scale(4);
+  transition-duration: var(--photoboxAnimationDuration, .8s);
+}
 
-    openController.addEventListener('click', function(e) {
-      e.preventDefault();
-      controller.style.display = 'block';
-    }, false);
+.photobox_type7 .photobox__label{
+  width: 95%;
+  text-align: center;
+  
+  transform: translate(-200%, -50%);
+  transition: transform calc(var(--photoboxAnimationDuration, .8s) / 2) ease-out;
+  will-change: transform;
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+}
 
-    closeController.addEventListener('click', function(e) {
-      e.preventDefault();
-      controller.style.display = 'none';
-    }, false);
+.photobox_type7:hover .photobox__label{
+  transition-duration: calc(var(--photoboxAnimationDuration, .8s) / 2);
+  transform: translate(-50%, -50%);
+}
 
-    backgroundColor.addEventListener('input', function() {
-      document.getElementsByTagName('body')[0].style.background = this.value;
-    }, false);
-    
-    inputText.addEventListener('keyup', function() {
-      textValue = this.value;
-      particles = [];
-      offscreenCtx.clearRect(0, 0, X, Y);
-      drawText();
-      initText();
-    }, false);
+.photobox_type7 .photobox__preview{
+    transition: transform calc(var(--photoboxAnimationDuration, .8s) / 2) cubic-bezier(0.71, 0.05, 0.29, 0.9);
+  will-change: transform;
+    transform: scale(1) rotate(0);
+}
 
-    inputStep.addEventListener('change', function() {
-      stepValue = Number(this.value);
-      particles = [];
-      offscreenCtx.clearRect(0, 0, X, Y);
-      drawText();
-      initText();
-    }, false);
+.photobox_type7:hover .photobox__preview{
+  transform: scale(1.2) rotate(5deg);
+}
 
-    inputFontSize.addEventListener('change', function() {
-      fontSizeValue = this.value;
-      particles = [];
-      offscreenCtx.clearRect(0, 0, X, Y);
-      drawText();
-      initText();
-    }, false);
+/* type 8 */
 
-    inputParticleSize.addEventListener('change', function() {
-      particleSizeValue = this.value;
-      for (var i = 0; i < particles.length; i++) {
-        particles[i].r = this.value;
-      }
-    }, false);
+.photobox_type8 .photobox__previewbox:before{
+  width: 0;
+  height: 0;
+  padding: 25%;
+  
+  background-color: var(--photoboxOverlay, rgba(0, 0, 0, .8));
+  border-radius: 50%;
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
 
-    inputFontColor.addEventListener('input', function() {
-      fontColorValue = this.value;
-      inputRandomFontColor.checked = false;
-      randomFontColorValue = false;
-      particles = [];
-      offscreenCtx.clearRect(0, 0, X, Y);
-      drawText();
-      initText();
-    }, false);
+  transition: transform calc(var(--photoboxAnimationDuration, .8s) / 2) ease;
+  will-change: transform;
+  transform: translate(-50%, -50%) scale(0);
+}
 
-    inputFlexibility.addEventListener('click', function() {
-      flexibilityValue = this.checked;
-    }, false);
+.photobox_type8:hover .photobox__previewbox:before{
+  transform: translate(-50%, -50%) scale(4);
+  transition-duration: var(--photoboxAnimationDuration, .8s);
+}
 
-    inputRandomFontColor.addEventListener('click', function() {
-      randomFontColorValue = inputRandomFontColor.checked;
-      if (randomFontColorValue) {
-        for (var i = 0; i < particles.length; i++) {
-          particles[i].changeColor();
-        }
-      }
-    }, false);
+.photobox_type8 .photobox__label{
+  width: 95%;
+  text-align: center;
+  
+  opacity: 0;  
+  transition: opacity calc(var(--photoboxAnimationDuration, .8s) / 4) cubic-bezier(0.71, 0.05, 0.29, 0.9), transform calc(var(--photoboxAnimationDuration, .8s) / 4) cubic-bezier(0.71, 0.05, 0.29, 0.9);
+  will-change: opacity, transform;
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 200%);
+  z-index: 3;
+}
 
-    selectComposition.addEventListener('change', function() {
-      compositionValue = this.value;
-    });
-    
-    inputIncreaseAngle.addEventListener('change', function() {
-      increaseAngleValue = Number(this.value);
-    });
+.photobox_type8:hover .photobox__label{
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  transition-duration: calc(var(--photoboxAnimationDuration, .8s) / 2);
+  transition-delay: calc(var(--photoboxAnimationDuration, .8s) / 4);
+}
 
-  });
-  // Author
-  console.log('File Name / particleOnPicture.js\nCreated Date / Jun 17, 2020\nAuthor / Toshiya Marukubo\nTwitter / https://twitter.com/toshiyamarukubo');
-})();
-</script>
+.photobox_type8 .photobox__preview{
+    transition: transform calc(var(--photoboxAnimationDuration, .8s) / 2) cubic-bezier(0.71, 0.05, 0.29, 0.9);
+  will-change: transform;
+    transform: scale(1) rotate(0);
+}
+
+.photobox_type8:hover .photobox__preview{
+  transform: scale(1.2) rotate(5deg);
+}
+
+/* type 9 */
+
+.photobox_type9 .photobox__previewbox:before{
+  width: 0;
+  height: 0;
+  padding: 25%;
+  
+  background-color: var(--photoboxOverlay, rgba(0, 0, 0, .8));
+  border-radius: 50%;
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+
+  transition: transform calc(var(--photoboxAnimationDuration, .8s) / 2) ease;
+  will-change: transform;
+  transform: translate(-50%, -50%) scale(0);
+}
+
+.photobox_type9:hover .photobox__previewbox:before{
+  transform: translate(-50%, -50%) scale(4);
+  transition-duration: var(--photoboxAnimationDuration, .8s);
+}
+
+.photobox_type9 .photobox__label{
+  width: 95%;
+  text-align: center;
+  
+  opacity: 0;  
+  transition: opacity calc(var(--photoboxAnimationDuration, .8s) / 4) cubic-bezier(0.71, 0.05, 0.29, 0.9), transform calc(var(--photoboxAnimationDuration, .8s) / 4) cubic-bezier(0.71, 0.05, 0.29, 0.9);
+  will-change: opacity, transform;
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 200%);
+  z-index: 3;
+}
+
+.photobox_type9:hover .photobox__label{
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  transition-duration: calc(var(--photoboxAnimationDuration, .8s) / 2);
+  transition-delay: calc(var(--photoboxAnimationDuration, .8s) / 4);
+}
+
+.photobox_type9 .photobox__preview{
+    transition: transform calc(var(--photoboxAnimationDuration, .8s) / 2) cubic-bezier(0.71, 0.05, 0.29, 0.9);
+  will-change: transform;
+    transform: scale(1);
+}
+
+.photobox_type9:hover .photobox__preview{
+  transform: scale(1.2);
+}
+
+/*
+* demo styles for photobox
+*/
+
+.photobox{
+  color: #fff;
+  font-size: 2.5rem;
+  font-weight: 700;
+  width: 33.33333%;
+  --photoboxOverlay: rgba(72, 27, 174, .7);
+  /*--photoboxAnimationDuration: .5s;*/
+}
+
+@media screen and (max-width: 480px){
+  .photobox{
+    width: 100%;
+  }
+}
+
+/*
+=====
+DEMO
+=====
+*/
+
+@media (min-width: 768px){
+
+  html{
+    font-size: 62.5%;
+  }
+}
+
+@media (max-width: 767px){
+
+  html{
+    font-size: 50%;
+  }
+}
+
+body{
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans, Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
+  font-size: 1.6rem;
+  color: #fff;
+  margin: 0;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;   
+  
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;  
+}
+
+a{
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover, a:focus{
+  text-decoration: underline;
+}
+
+.page{
+  flex-grow: 1;
+  order: 1;
+}
+
+.page__container{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+
+
+مصادر
+
+        </style>
+        <script>
+const burger = document.getElementById('burger');
+const ul = document.querySelector('nav ul');
+
+burger.addEventListener('click', () => {
+	burger.classList.toggle('show-x');
+	ul.classList.toggle('show');
+});
+        </script>
     </head>
     <body>
-        <canvas id="canvas">Canvas not supported.</canvas>
-<p id="openController"><a href="#">Open Controller</a></p>
-<div id="controller">
-  <p id="closeController"><a href="#">Close</a></p>
-  <dl>
-    <dt>
-            <p>Change Text</p>
-          </dt>
-    <dd>
-      <input type="text" id="text" value="How are you?" placeholder="Please input.">
-    </dd>
-    <dt>
-            <p>Composition</p>
-          </dt>
-    <dd>
-      <select id="composition">
-              <option value="source-over">source-over</option>
-              <option value="lighter" selected>lighter</option>
-              <option value="xor">xor</option>
-            </select>
-    </dd>
-    <dt>
-            <p>Font Color</p>
-          </dt>
-    <dd>
-      <input type="color" id="fontColor" value="#FFFFFF">
-    </dd>
-    <dt>
-            <p>Background Color</p>
-          </dt>
-    <dd>
-      <input type="color" id="backgroundColor" value="#000000">
-    </dd>
-    <dt>
-            <p>Flexibility</p>
-          </dt>
-    <dd>
-      <input type="checkbox" id="flexibility" checked>
-    </dd>
-    <dt>
-            <p>Font Random Color</p>
-          </dt>
-    <dd>
-      <input type="checkbox" id="randomFontColor" checked>
-    </dd>
-    <dt>
-            <p>Step</p>
-          </dt>
-    <dd>
-      <input type="range" id="step" min="4" max="50" value="8" step="1">
-    </dd>
-    <dt>
-            <p>Font Size</p>
-          </dt>
-    <dd>
-      <input type="range" id="fontSize" min="1" max="500" value="200" step="10">
-    </dd>
-    <dt>
-            <p>Particle Size</p>
-          </dt>
-    <dd>
-      <input type="range" id="particleSize" min="1" max="50" value="10" step="1">
-    </dd>
-    <dt>
-            <p>Angle</p>
-          </dt>
-    <dd>
-      <input type="range" id="increaseAngle" min="1" max="50" value="3" step="1">
-    </dd>
-  </dl>
-</div>
+        <nav>
+            <p>mr.rg</p>
+            
+            <button id="burger" class="burger">
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </button>
+            
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+        <header>
+            <h1>mumtadher-rg web site dv cco</h1>
+
+           
+        </header>
+        <div class="wrapper">
+            <div class="box a"></div>
+            <div class="box b"></div>
+          </div>
+          <div class="page">
+            <div class="page__demo">
+              <div class="page__container">
+                <div class="photobox photobox_type1">
+                  <div class="photobox__previewbox">
+                    <img src="https://stas-melnikov.ru/cliparts/man3_640x426.jpg" class="photobox__preview" alt="Preview">
+                    <span class="photobox__label">Effect #1</span>
+                  </div>
+                </div>
+                <div class="photobox photobox_type2">
+                  <div class="photobox__previewbox">
+                    <img src="https://stas-melnikov.ru/cliparts/girl3_640x426.jpg" class="photobox__preview" alt="Preview">
+                    <span class="photobox__label">Effect #2</span>
+                  </div>
+                </div>
+                <div class="photobox photobox_type3">
+                  <div class="photobox__previewbox">
+                    <img src="https://stas-melnikov.ru/cliparts/nature640x426.jpg" class="photobox__preview" alt="Preview">
+                    <span class="photobox__label">Effect #3</span>
+                  </div>
+                </div>
+                <div class="photobox photobox_type4">
+                  <div class="photobox__previewbox">
+                    <img src="https://stas-melnikov.ru/cliparts/girl3_640x426.jpg" class="photobox__preview" alt="Preview">
+                    <span class="photobox__label">Effect #4</span>
+                  </div>
+                </div>            
+                <div class="photobox photobox_type5">
+                  <div class="photobox__previewbox">
+                    <img src="https://stas-melnikov.ru/cliparts/man3_640x426.jpg" class="photobox__preview" alt="Preview">
+                    <span class="photobox__label">Effect #5</span>
+                  </div>
+                </div>                        
+                <div class="photobox photobox_type6">
+                  <div class="photobox__previewbox">
+                    <img src="https://stas-melnikov.ru/cliparts/girl3_640x426.jpg" class="photobox__preview" alt="Preview">
+                    <span class="photobox__label">Effect #6</span>
+                  </div>
+                </div>
+                <div class="photobox photobox_type7">
+                  <div class="photobox__previewbox">
+                    <img src="https://stas-melnikov.ru/cliparts/man3_640x426.jpg" class="photobox__preview" alt="Preview">
+                    <span class="photobox__label">Effect #7</span>
+                  </div>
+                </div>
+                <div class="photobox photobox_type8">
+                  <div class="photobox__previewbox">
+                    <img src="https://stas-melnikov.ru/cliparts/girl3_640x426.jpg" class="photobox__preview" alt="Preview">
+                    <span class="photobox__label">Effect #8</span>
+                  </div>
+                </div>      
+                <div class="photobox photobox_type9">
+                  <div class="photobox__previewbox">
+                    <img src="https://stas-melnikov.ru/cliparts/nature640x426.jpg" class="photobox__preview" alt="Preview">
+                    <span class="photobox__label">Effect #9</span>
+                  </div>
+                </div>
+              </div>  
+            </div>
+          </div>
+          
+          
+          
+          مصادر
     </body>
 </html>
